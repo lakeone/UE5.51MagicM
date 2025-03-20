@@ -2532,6 +2532,10 @@ void FDeferredShadingSceneRenderer::Render(FRDGBuilder& GraphBuilder)
 			// VisualizeVirtualShadowMap TODO
 		}
 
+		// ZHH Start
+		RenderOutlinePass(GraphBuilder, SceneTextures);
+		// ZHH End
+
 		FRDGTextureRef ExposureIlluminanceSetup = nullptr;
 		if (!bHasRayTracedOverlay)
 		{

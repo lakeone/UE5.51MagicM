@@ -145,6 +145,10 @@ struct FSceneTextures : public FMinimalSceneTextures
 	FRDGTextureRef MobileLocalLightTextureA {};
 	FRDGTextureRef MobileLocalLightTextureB {};
 
+	// ZHH Start
+	FRDGTextureRef OutlineBufferA{};
+	// ZHH End
+
 	// Texture containing the screen space ambient occlusion result.
 	FRDGTextureRef ScreenSpaceAO{};
 

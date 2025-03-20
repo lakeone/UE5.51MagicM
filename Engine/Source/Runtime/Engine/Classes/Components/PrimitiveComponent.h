@@ -904,6 +904,20 @@ public:
 	UPROPERTY(EditAnywhere, AdvancedDisplay, Category=Rendering, meta=(UIMin = "1", UIMax = "10.0"))
 	float BoundsScale;
 
+	// ZHH Start
+	/** Enable Outline */
+	UPROPERTY(EditAnywhere, Category = Rendering)
+	uint8 bEnableOutline : 1;
+
+	/** Control Outline Scale */
+	UPROPERTY(EditAnywhere, Category = Rendering)
+	float OutlineScale;
+
+	/** Set Outline Color */
+	UPROPERTY(EditAnywhere, Category = Rendering)
+	FLinearColor OutlineColor0;
+	// ZHH END
+
 	UE_DECLARE_COMPONENT_ACTOR_INTERFACE(PrimitiveComponent)
 
 private:

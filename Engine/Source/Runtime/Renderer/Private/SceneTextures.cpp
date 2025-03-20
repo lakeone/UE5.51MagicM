@@ -23,6 +23,9 @@
 #include "IHeadMountedDisplayModule.h"
 #include "Substrate/Substrate.h"
 #include "VisualizeTexture.h"
+// ZHH Start
+#include "OutlinePassRendering.h"
+// ZHH End
 
 static TAutoConsoleVariable<int32> CVarSceneTargetsResizeMethod(
 	TEXT("r.SceneRenderTargetResizeMethod"),
@@ -672,6 +675,10 @@ void FSceneTextures::InitializeViewFamily(FRDGBuilder& GraphBuilder, FViewFamily
 		// Screen Space Ambient Occlusion
 		SceneTextures.ScreenSpaceAO = CreateScreenSpaceAOTexture(GraphBuilder, ViewFamily.GetFeatureLevel(), Config.Extent);
 
+		// ZHH Start
+		SceneTextures.OutlineBufferA = CreateOutlineBufferTexture(GraphBuilder, Config.Extent, GFastVRamConfig.OutlineBufferA);
+		// ZHH End
+
 		// Small Depth
 		const FIntPoint SmallDepthExtent = GetDownscaledExtent(Config.Extent, Config.SmallDepthDownsampleFactor);
 		const FRDGTextureDesc SmallDepthDesc(FRDGTextureDesc::Create2D(SmallDepthExtent, PF_DepthStencil, FClearValueBinding::None, TexCreate_DepthStencilTargetable | TexCreate_ShaderResource));
@@ -1043,6 +1050,9 @@ void SetupSceneTextureUniformParameters(
 	SceneTextureParameters.GBufferETexture = SystemTextures.Black;
 	SceneTextureParameters.GBufferFTexture = SystemTextures.MidGrey;
 	SceneTextureParameters.GBufferVelocityTexture = SystemTextures.Black;
+	// ZHH Start
+	SceneTextureParameters.OutlineBufferATexture = SystemTextures.Black;
+	// ZHH End
 	SceneTextureParameters.ScreenSpaceAOTexture = GetScreenSpaceAOFallback(SystemTextures);
 	SceneTextureParameters.CustomDepthTexture = SystemTextures.DepthDummy;
 	SceneTextureParameters.CustomStencilTexture = SystemTextures.StencilDummySRV;
@@ -1099,6 +1109,13 @@ void SetupSceneTextureUniformParameters(
 		{
 			SceneTextureParameters.GBufferVelocityTexture = SceneTextures->Velocity;
 		}
+
+		// ZHH Start
+		if (EnumHasAnyFlags(SetupMode, ESceneTextureSetupMode::OutlineBufferA) && HasBeenProduced(SceneTextures->OutlineBufferA))
+		{
+			SceneTextureParameters.OutlineBufferATexture = SceneTextures->OutlineBufferA;
+		}
+		// ZHH End
 
 		if (EnumHasAnyFlags(SetupMode, ESceneTextureSetupMode::SSAO) && HasBeenProduced(SceneTextures->ScreenSpaceAO))
 		{

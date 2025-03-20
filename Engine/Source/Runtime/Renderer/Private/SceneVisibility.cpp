@@ -1631,6 +1631,13 @@ void FRelevancePacket::ComputeRelevance(FDynamicPrimitiveIndexList& DynamicPrimi
 								else // Regular shading path
 								{
 									DrawCommandPacket.AddCommandsForMesh(PrimitiveIndex, PrimitiveSceneInfo, StaticMeshRelevance, StaticMesh, CullingPayloadFlags, Scene, bCanCache, EMeshPass::BasePass);
+									// ZHH Start
+									if (PrimitiveSceneInfo->Proxy->IsEnabledOutline_RenderThread())
+									{
+										DrawCommandPacket.AddCommandsForMesh(PrimitiveIndex, PrimitiveSceneInfo, StaticMeshRelevance, StaticMesh, CullingPayloadFlags, Scene, bCanCache, EMeshPass::OutlinePass);
+									}
+									// ZHH End
+									
 									MarkMask |= EMarkMaskBits::StaticMeshVisibilityMapMask;
 
 									if (StaticMeshRelevance.bUseSkyMaterial)
@@ -2293,6 +2300,14 @@ static void ComputeDynamicMeshRelevance(
 		{
 			PassMask.Set(EMeshPass::BasePass);
 			View.NumVisibleDynamicMeshElements[EMeshPass::BasePass] += NumElements;
+
+			// ZHH Start
+			if (PrimitiveSceneInfo->Proxy->IsEnabledOutline_RenderThread())
+			{
+				PassMask.Set(EMeshPass::OutlinePass);
+				View.NumVisibleDynamicMeshElements[EMeshPass::OutlinePass] += NumElements;
+			}
+			// ZHH END
 
 			if (ViewRelevance.bUsesSkyMaterial)
 			{

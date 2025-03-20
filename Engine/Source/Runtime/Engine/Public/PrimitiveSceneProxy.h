@@ -996,6 +996,12 @@ public:
 		ImposterIndex = INDEX_NONE;
 	}
 
+	// ZHH Start
+	inline bool IsEnabledOutline_RenderThread() const { return bEnableOutline; }
+	inline float GetOutlineScale() const { return OutlineScale; }
+	inline FLinearColor GetOutlineColor() const { return OutlineColor; }
+	// ZHH End
+
 	/** 
 	 * Drawing helper. Draws nice bouncy line.
 	 */
@@ -1307,6 +1313,17 @@ protected:
 
 	/** Can be set to false to skip some work only needed on lit primitives. */
 	uint8 bWillEverBeLit : 1;
+
+	// ZHH Start
+	/** True if the primitive should be outline. */
+	uint8 bEnableOutline : 1;
+
+	/** Control outline scale */
+	float OutlineScale;
+
+	/** Set outline color */
+	FLinearColor OutlineColor;
+	// ZHH End
 
 	/** True if the primitive casts dynamic shadows. */
 	uint8 bCastDynamicShadow : 1;

@@ -435,6 +435,10 @@ public:
 
 	bool RenderHzb(FRDGBuilder& GraphBuilder, FRDGTextureRef SceneDepthTexture, const FBuildHZBAsyncComputeParams* AsyncComputeParams, Froxel::FRenderer& FroxelRenderer);
 
+	// ZHH Start
+	void RenderOutlinePass(FRDGBuilder& GraphBuilder, FSceneTextures& SceneTextures);
+	// ZHH END
+
 	/** Renders the view family. */
 	virtual void Render(FRDGBuilder& GraphBuilder) override;
 

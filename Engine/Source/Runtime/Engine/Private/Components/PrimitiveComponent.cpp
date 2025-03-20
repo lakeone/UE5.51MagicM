@@ -409,6 +409,12 @@ UPrimitiveComponent::UPrimitiveComponent(const FObjectInitializer& ObjectInitial
 	bHiddenInSceneCapture = false;
 
 	FirstPersonPrimitiveType = EFirstPersonPrimitiveType::None;
+
+	// ZHH Start
+	bEnableOutline = false;
+	OutlineScale = 1.0f;
+	OutlineColor0 = FLinearColor::Green;
+	// ZHH End
 }
 
 bool UPrimitiveComponent::UsesOnlyUnlitMaterials() const
@@ -1220,6 +1226,23 @@ void UPrimitiveComponent::PostEditChangeProperty(FPropertyChangedEvent& Property
 		{
 			MarkRenderStateDirty();
 		}
+
+		// ZHH Start
+		if (PropertyName == GET_MEMBER_NAME_CHECKED(UPrimitiveComponent, bEnableOutline))
+		{
+			MarkRenderStateDirty();
+		}
+		// we need to reregister the primitive render after changing outline scale to propagate the change to the rendering thread
+		if (PropertyName == GET_MEMBER_NAME_CHECKED(UPrimitiveComponent, OutlineScale))
+		{
+			MarkRenderStateDirty();
+		}
+		// we need to reregister the primitive render after changing outline color to propagate the change to the rendering thread
+		if (PropertyName == GET_MEMBER_NAME_CHECKED(UPrimitiveComponent, OutlineColor0))
+		{
+			MarkRenderStateDirty();
+		}
+		// ZHH End
 	}
 
 	if (FProperty* MemberPropertyThatChanged = PropertyChangedEvent.MemberProperty)

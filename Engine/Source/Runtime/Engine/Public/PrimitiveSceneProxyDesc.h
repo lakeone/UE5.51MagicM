@@ -147,7 +147,11 @@ struct FPrimitiveSceneProxyDesc
 	uint32 bIsOwnedByFoliage:1;
 #endif
 
-
+	// ZHH Start
+	uint8 bEnableOutline : 1;
+	float OutlineScale = 1.0f;
+	FLinearColor OutlineColor;
+	// ZHH End
 
 	TEnumAsByte<EComponentMobility::Type> Mobility = EComponentMobility::Movable;
 	int32 TranslucencySortPriority = 0;

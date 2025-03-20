@@ -1,0 +1,45 @@
+#include "../Common.ush"
+#include "/Engine/Generated/Material.ush"
+#include "/Engine/Generated/VertexFactory.ush"
+
+
+struct FSimpleMeshPassVSToPS
+{
+	FVertexFactoryInterpolantsVSToPS FactoryInterpolants;
+	float4 SvPosition : SV_POSITION;
+};
+
+
+float4 OutlineColor;
+
+void MainVS(
+	FVertexFactoryInput Input,
+	out FSimpleMeshPassVSToPS Output)
+{
+
+	float4 ClipSpacePosition;
+	
+	ResolvedView = ResolveView();
+
+	FVertexFactoryIntermediates VFIntermediates = GetVertexFactoryIntermediates(Input);
+
+	float4 WorldPos = VertexFactoryGetWorldPosition(Input, VFIntermediates);
+	float3 WorldNormal = VertexFactoryGetWorldNormal(Input, VFIntermediates);
+
+	float3x3 TangentToLocal = VertexFactoryGetTangentToLocal(Input, VFIntermediates);
+
+	FMaterialVertexParameters VertexParameters = GetMaterialVertexParameters(Input, VFIntermediates, WorldPos.xyz, TangentToLocal);
+	WorldPos.xyz += GetMaterialWorldPositionOffset(VertexParameters);
+
+	float4 RasterizedWorldPosition = VertexFactoryGetRasterizedWorldPosition(Input, VFIntermediates, WorldPos);
+	ClipSpacePosition = mul(RasterizedWorldPosition, ResolvedView.TranslatedWorldToClip);
+	Output.SvPosition = INVARIANT(ClipSpacePosition);
+	Output.FactoryInterpolants = VertexFactoryGetInterpolantsVSToPS(Input, VFIntermediates, VertexParameters);
+}
+
+void MainPS(
+	FSimpleMeshPassVSToPS In,
+	out float4 OutColor : SV_Target0)
+{
+	OutColor = OutlineColor;
+}

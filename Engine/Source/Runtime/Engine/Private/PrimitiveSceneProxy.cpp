@@ -315,7 +315,12 @@ void FPrimitiveSceneProxyDesc::InitializeFromPrimitiveComponent(const UPrimitive
 	bSelected = InComponent->IsSelected();
 	bIndividuallySelected = InComponent->IsComponentIndividuallySelected();
 	bShouldRenderSelected = InComponent->ShouldRenderSelected();
-	bCollisionEnabled = InComponent->IsCollisionEnabled(); 
+	bCollisionEnabled = InComponent->IsCollisionEnabled();
+	// ZHH Start
+	bEnableOutline = InComponent->bEnableOutline;
+	OutlineScale = InComponent->OutlineScale;
+	OutlineColor = InComponent->OutlineColor0;
+	// ZHH End
 	
 	if (const AActor* ActorOwner = InComponent->GetOwner())
 	{
@@ -445,6 +450,11 @@ FPrimitiveSceneProxy::FPrimitiveSceneProxy(const FPrimitiveSceneProxyDesc& InPro
 ,	bNeedsUnbuiltPreviewLighting(!InProxyDesc.IsPrecomputedLightingValid())
 ,	bHasValidSettingsForStaticLighting(InProxyDesc.HasValidSettingsForStaticLighting())
 ,	bWillEverBeLit(true)
+// ZHH Start
+,	bEnableOutline(InProxyDesc.bEnableOutline)
+,	OutlineScale(InProxyDesc.OutlineScale)
+,	OutlineColor(InProxyDesc.OutlineColor)
+// ZHH End
 	// Disable dynamic shadow casting if the primitive only casts indirect shadows, since dynamic shadows are always shadowing direct lighting
 ,	bCastDynamicShadow(InProxyDesc.bCastDynamicShadow && InProxyDesc.CastShadow && !InProxyDesc.GetShadowIndirectOnly())
 ,	bEmissiveLightSource(InProxyDesc.bEmissiveLightSource)

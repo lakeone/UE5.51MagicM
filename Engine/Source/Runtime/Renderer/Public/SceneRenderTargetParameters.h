@@ -28,20 +28,24 @@ RENDERER_API FRDGTextureRef GetSceneTexture(const FSceneTextures& SceneTextures,
 
 enum class ESceneTextureSetupMode : uint32
 {
-	None			= 0,
-	SceneColor		= 1 << 0,
-	SceneDepth		= 1 << 1,
-	SceneVelocity	= 1 << 2,
-	GBufferA		= 1 << 3,
-	GBufferB		= 1 << 4,
-	GBufferC		= 1 << 5,
-	GBufferD		= 1 << 6,
-	GBufferE		= 1 << 7,
-	GBufferF		= 1 << 8,
-	SSAO			= 1 << 9,
-	CustomDepth		= 1 << 10,
-	GBuffers		= GBufferA | GBufferB | GBufferC | GBufferD | GBufferE | GBufferF,
-	All				= SceneColor | SceneDepth | SceneVelocity | GBuffers | SSAO | CustomDepth
+	None = 0,
+	SceneColor = 1 << 0,
+	SceneDepth = 1 << 1,
+	SceneVelocity = 1 << 2,
+	GBufferA = 1 << 3,
+	GBufferB = 1 << 4,
+	GBufferC = 1 << 5,
+	GBufferD = 1 << 6,
+	GBufferE = 1 << 7,
+	GBufferF = 1 << 8,
+	SSAO = 1 << 9,
+	CustomDepth = 1 << 10,
+	// ZHH Start
+	OutlineBufferA = 1 << 11,
+	GBuffers = GBufferA | GBufferB | GBufferC | GBufferD | GBufferE | GBufferF,
+	OutlineBuffers = OutlineBufferA,
+	All				= SceneColor | SceneDepth | SceneVelocity | GBuffers | SSAO | CustomDepth | OutlineBuffers
+	// ZHH End
 };
 ENUM_CLASS_FLAGS(ESceneTextureSetupMode);
 

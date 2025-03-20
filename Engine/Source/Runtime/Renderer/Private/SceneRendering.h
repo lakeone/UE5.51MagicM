@@ -2853,6 +2853,9 @@ struct FFastVramConfig
 	ETextureCreateFlags VolumetricFog;
 	ETextureCreateFlags SeparateTranslucency;
 	ETextureCreateFlags SeparateTranslucencyModulate;
+	// ZHH Start
+	ETextureCreateFlags OutlineBufferA;
+	// ZHH End
 	ETextureCreateFlags ScreenSpaceAO;
 	ETextureCreateFlags SSR;
 	ETextureCreateFlags DBufferA;
