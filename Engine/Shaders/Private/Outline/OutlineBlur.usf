@@ -1,0 +1,30 @@
+#include "../Common.ush"
+#include "../ScreenPass.ush"
+ 
+FScreenTransform SvPositionToTextureUV;
+Texture2D BlurredOutlineTexture;
+Texture2D NoBlurredOutlineTexture;
+Texture2D OutlineTexture;
+
+void OutlineBlurSetupPS(
+ 	float4 SvPosition : SV_POSITION,
+ 	out float4 OutColor : SV_Target0)
+ {
+ 	float2 InUV = ApplyScreenTransform(SvPosition.xy, SvPositionToTextureUV);
+ 
+ 	float4 Outline = Texture2DSample(OutlineTexture, GlobalPointClampedSampler, InUV);
+ 
+ 	OutColor = Outline;
+ }
+ 
+ void OutlineBlurCombinePS(
+ 	float4 SvPosition : SV_POSITION,
+ 	out float4 OutColor : SV_Target0)
+ {
+ 	float2 InUV = ApplyScreenTransform(SvPosition.xy, SvPositionToTextureUV);
+ 
+ 	float4 BlurredOutline = Texture2DSample(BlurredOutlineTexture, GlobalPointClampedSampler, InUV);
+	float4 NoBlurredOutline = Texture2DSample(NoBlurredOutlineTexture, GlobalPointClampedSampler, InUV);
+ 
+	OutColor = clamp(BlurredOutline - NoBlurredOutline, float4(0.0, 0.0, 0.0, 0.0), float4(1.0, 1.0, 1.0, 1.0));
+ }

@@ -299,6 +299,9 @@ BEGIN_SHADER_PARAMETER_STRUCT(FTonemapParameters, )
 	SHADER_PARAMETER_STRUCT(FEyeAdaptationParameters, EyeAdaptation)
 	SHADER_PARAMETER_STRUCT(FLocalExposureParameters, LocalExposure)
 	SHADER_PARAMETER_RDG_TEXTURE_SRV(Texture2D, ColorTexture)
+	// ZHH Start
+	SHADER_PARAMETER_RDG_TEXTURE(Texture2D, OutlineTexture)
+	// ZHH End
 
 	// Parameters to apply to the scene color.
 	SHADER_PARAMETER_RDG_BUFFER_SRV(StructuredBuffer<float4>, SceneColorApplyParamaters)
@@ -803,6 +806,9 @@ FScreenPassTexture AddTonemapPass(FRDGBuilder& GraphBuilder, const FViewInfo& Vi
 	CommonParameters.Color = GetScreenPassTextureViewportParameters(SceneColorViewport);
 	CommonParameters.Output = GetScreenPassTextureViewportParameters(OutputViewport);
 	CommonParameters.ColorTexture = Inputs.SceneColor.TextureSRV;
+	// ZHH Start
+	CommonParameters.OutlineTexture = View.GetSceneTextures().OutlineBufferA;
+	// ZHH End
 	CommonParameters.LumBilateralGrid = Inputs.LocalExposureBilateralGridTexture;
 	CommonParameters.BlurredLogLum = Inputs.BlurredLogLuminanceTexture;
 	CommonParameters.LumBilateralGridSampler = BilinearClampSampler;

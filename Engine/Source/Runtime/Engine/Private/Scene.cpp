@@ -393,6 +393,23 @@ FPostProcessSettings::FPostProcessSettings()
 	// to set all bOverride_.. by default to false
 	FMemory::Memzero(this, sizeof(FPostProcessSettings));
 
+	// ZHH Start
+	ShadowBlurSizeScale = 4.0;
+	ShadowCrossBlur = 0.0f;
+	ShadowBlur1Tint = FLinearColor(0.3465f, 0.3465f, 0.3465f);
+	ShadowBlur1Size = 0.3f;
+	ShadowBlur2Tint = FLinearColor(0.138f, 0.138f, 0.138f);
+	ShadowBlur2Size = 1.0f;
+	ShadowBlur3Tint = FLinearColor(0.1176f, 0.1176f, 0.1176f);
+	ShadowBlur3Size = 2.0f;
+	ShadowBlur4Tint = FLinearColor(0.066f, 0.066f, 0.066f);
+	ShadowBlur4Size = 10.0f;
+	ShadowBlur5Tint = FLinearColor(0.066f, 0.066f, 0.066f);
+	ShadowBlur5Size = 30.0f;
+	ShadowBlur6Tint = FLinearColor(0.061f, 0.061f, 0.061f);
+	ShadowBlur6Size = 64.0f;
+	// ZHH End
+
 	TemperatureType = ETemperatureMethod::TEMP_WhiteBalance;
 	WhiteTemp = 6500.0f;
 	WhiteTint = 0.0f;

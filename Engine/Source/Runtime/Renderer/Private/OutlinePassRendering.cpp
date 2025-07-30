@@ -6,6 +6,7 @@
 #include "SimpleMeshDrawCommandPass.h"
 #include "StaticMeshBatch.h"
 #include "DeferredShadingRenderer.h"
+#include "Outline/OutlineBlur.h"
 
 // #pragma optimize("", off)
 //--------------------------------OutlineBufferTexture------------------------
@@ -17,7 +18,7 @@ FRDGTextureDesc GetOutlineBufferTextureDesc(FIntPoint Extent, ETextureCreateFlag
 	//TexCreate_UAV：Unordered Access View，允许在着色器中进行随机读写操作
 	//TexCreate_RenderTargetable：表示纹理可作为渲染目标使用
 	//TexCreate_ShaderResource：表示纹理可作为着色器资源，可以在着色器中进行采样等操作
-	return FRDGTextureDesc(FRDGTextureDesc::Create2D(Extent, PF_B8G8R8A8, FClearValueBinding::Black, TexCreate_UAV | TexCreate_RenderTargetable | TexCreate_ShaderResource | CreateFlags));
+	return FRDGTextureDesc(FRDGTextureDesc::Create2D(Extent, PF_B8G8R8A8, FClearValueBinding::Transparent, TexCreate_UAV | TexCreate_RenderTargetable | TexCreate_ShaderResource | CreateFlags));
 }
 
 FRDGTextureRef CreateOutlineBufferTexture(FRDGBuilder& GraphBuilder, FIntPoint Extent, ETextureCreateFlags CreateFlags)
@@ -180,6 +181,9 @@ FOutlineMeshPassParameters* GetOutlinePassParameters(FRDGBuilder& GraphBuilder, 
 
 	// 设置RenderTarget
 	PassParameters->RenderTargets[0] = FRenderTargetBinding(SceneTextures.OutlineBufferA, ERenderTargetLoadAction::EClear);
+	// 这里还是不绑深度了
+	// todo： 这里写入CustomDepth，在高斯模糊Pass后和SceneDepth做比较，被遮挡了的部分就去掉描边
+	// PassParameters->RenderTargets.DepthStencil = FDepthStencilBinding(SceneTextures.Depth.Target, ERenderTargetLoadAction::ELoad, ERenderTargetLoadAction::ELoad, FExclusiveDepthStencil::DepthWrite_StencilWrite);
 
 	return PassParameters;
 }
@@ -213,6 +217,8 @@ void FDeferredShadingSceneRenderer::RenderOutlinePass(FRDGBuilder& GraphBuilder,
 				{
 					View.ParallelMeshDrawCommandPasses[EMeshPass::OutlinePass].Dispatch(DispatchPassBuilder, &PassParameters->InstanceCullingDrawParams);
 				});
+
+			AddOutlineBlurPass(GraphBuilder, View);
 		}
 	}
 }

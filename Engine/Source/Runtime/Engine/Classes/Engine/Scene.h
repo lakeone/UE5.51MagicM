@@ -672,6 +672,49 @@ struct FPostProcessSettings
 	GENERATED_USTRUCT_BODY()
 
 	// first all bOverride_... as they get grouped together into bitfields
+	// ZHH Start
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Overrides, meta = (PinHiddenByDefault, InlineEditConditionToggle))
+	uint8 bOverride_ShadowBlur1Tint : 1;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Overrides, meta = (PinHiddenByDefault, InlineEditConditionToggle))
+	uint8 bOverride_ShadowCrossBlur : 1;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Overrides, meta = (PinHiddenByDefault, InlineEditConditionToggle))
+	uint8 bOverride_ShadowBlur1Size : 1;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Overrides, meta = (PinHiddenByDefault, InlineEditConditionToggle))
+	uint8 bOverride_ShadowBlur2Size : 1;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Overrides, meta = (PinHiddenByDefault, InlineEditConditionToggle))
+	uint8 bOverride_ShadowBlur2Tint : 1;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Overrides, meta = (PinHiddenByDefault, InlineEditConditionToggle))
+	uint8 bOverride_ShadowBlur3Tint : 1;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Overrides, meta = (PinHiddenByDefault, InlineEditConditionToggle))
+	uint8 bOverride_ShadowBlur3Size : 1;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Overrides, meta = (PinHiddenByDefault, InlineEditConditionToggle))
+	uint8 bOverride_ShadowBlur4Tint : 1;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Overrides, meta = (PinHiddenByDefault, InlineEditConditionToggle))
+	uint8 bOverride_ShadowBlur4Size : 1;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Overrides, meta = (PinHiddenByDefault, InlineEditConditionToggle))
+	uint8 bOverride_ShadowBlur5Tint : 1;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Overrides, meta = (PinHiddenByDefault, InlineEditConditionToggle))
+	uint8 bOverride_ShadowBlur5Size : 1;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Overrides, meta = (PinHiddenByDefault, InlineEditConditionToggle))
+	uint8 bOverride_ShadowBlur6Tint : 1;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Overrides, meta = (PinHiddenByDefault, InlineEditConditionToggle))
+	uint8 bOverride_ShadowBlur6Size : 1;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Overrides, meta = (PinHiddenByDefault, InlineEditConditionToggle))
+	uint8 bOverride_ShadowBlurSizeScale : 1;
+	// ZHH End
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Overrides, meta=(PinHiddenByDefault, InlineEditConditionToggle))
 	uint8 bOverride_TemperatureType:1;
@@ -1343,6 +1386,82 @@ struct FPostProcessSettings
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Overrides, meta = (PinHiddenByDefault, InlineEditConditionToggle))
 	uint32 bOverride_PathTracingIncludeIndirectVolume : 1;
+
+	// -----------------------------------------------------------------------
+	// ZHH Start
+		/**
+	 * Scale for all Toon Shadow Blur sizes
+	 */
+	UPROPERTY(interp, BlueprintReadWrite, Category = "Toon|ShadowTextureBlur", meta = (ClampMin = "0.0", UIMax = "64.0", editcondition = "bOverride_ShadowBlurSizeScale", DisplayName = "Size scale"))
+	float ShadowBlurSizeScale;
+
+	UPROPERTY(interp, BlueprintReadWrite, Category = "Toon|ShadowTextureBlur", AdvancedDisplay, meta = (ClampMin = "0.0", UIMax = "3", editcondition = "bOverride_ShadowCrossBlur", DisplayName = "Cross Blur"))
+	float ShadowCrossBlur;
+
+	/**
+	 * Diameter size for the Blur1 in percent of the screen width
+	 * (is done in 1/1 resolution, larger values cost more performance, good for high frequency details)
+	 * >=0: can be clamped because of shader limitations
+	 */
+	UPROPERTY(interp, BlueprintReadWrite, Category = "Toon|ShadowTextureBlur", AdvancedDisplay, meta = (ClampMin = "0.0", UIMax = "4.0", editcondition = "bOverride_ShadowBlur1Size", DisplayName = "#1 Size"))
+	float ShadowBlur1Size;
+	/**
+	 * Diameter size for Blur2 in percent of the screen width
+	 * (is done in 1/2 resolution, larger values cost more performance)
+	 * >=0: can be clamped because of shader limitations
+	 */
+	UPROPERTY(interp, BlueprintReadWrite, Category = "Toon|ShadowTextureBlur", AdvancedDisplay, meta = (ClampMin = "0.0", UIMax = "8.0", editcondition = "bOverride_ShadowBlur2Size", DisplayName = "#2 Size"))
+	float ShadowBlur2Size;
+	/**
+	 * Diameter size for Blur3 in percent of the screen width
+	 * (is done in 1/4 resolution, larger values cost more performance)
+	 * >=0: can be clamped because of shader limitations
+	 */
+	UPROPERTY(interp, BlueprintReadWrite, Category = "Toon|ShadowTextureBlur", AdvancedDisplay, meta = (ClampMin = "0.0", UIMax = "16.0", editcondition = "bOverride_ShadowBlur3Size", DisplayName = "#3 Size"))
+	float ShadowBlur3Size;
+	/**
+	 * Diameter size for Blur4 in percent of the screen width
+	 * (is done in 1/8 resolution, larger values cost more performance, best for wide contributions)
+	 * >=0: can be clamped because of shader limitations
+	 */
+	UPROPERTY(interp, BlueprintReadWrite, Category = "Toon|ShadowTextureBlur", AdvancedDisplay, meta = (ClampMin = "0.0", UIMax = "32.0", editcondition = "bOverride_ShadowBlur4Size", DisplayName = "#4 Size"))
+	float ShadowBlur4Size;
+	/**
+	 * Diameter size for Blur5 in percent of the screen width
+	 * (is done in 1/16 resolution, larger values cost more performance, best for wide contributions)
+	 * >=0: can be clamped because of shader limitations
+	 */
+	UPROPERTY(interp, BlueprintReadWrite, Category = "Toon|ShadowTextureBlur", AdvancedDisplay, meta = (ClampMin = "0.0", UIMax = "64.0", editcondition = "bOverride_ShadowBlur5Size", DisplayName = "#5 Size"))
+	float ShadowBlur5Size;
+	/**
+	 * Diameter size for Blur6 in percent of the screen width
+	 * (is done in 1/32 resolution, larger values cost more performance, best for wide contributions)
+	 * >=0: can be clamped because of shader limitations
+	 */
+	UPROPERTY(interp, BlueprintReadWrite, Category = "Toon|ShadowTextureBlur", AdvancedDisplay, meta = (ClampMin = "0.0", UIMax = "128.0", editcondition = "bOverride_ShadowBlur6Size", DisplayName = "#6 Size"))
+	float ShadowBlur6Size;
+
+	/** Blur1 tint color */
+	UPROPERTY(interp, BlueprintReadWrite, Category = "Toon|ShadowTextureBlur", AdvancedDisplay, meta = (editcondition = "bOverride_ShadowBlur1Tint", DisplayName = "#1 Tint", HideAlphaChannel))
+	FLinearColor ShadowBlur1Tint;
+	/** Blur2 tint color */
+	UPROPERTY(interp, BlueprintReadWrite, Category = "Toon|ShadowTextureBlur", AdvancedDisplay, meta = (editcondition = "bOverride_ShadowBlur2Tint", DisplayName = "#2 Tint", HideAlphaChannel))
+	FLinearColor ShadowBlur2Tint;
+	/** Blur3 tint color */
+	UPROPERTY(interp, BlueprintReadWrite, Category = "Toon|ShadowTextureBlur", AdvancedDisplay, meta = (editcondition = "bOverride_ShadowBlur3Tint", DisplayName = "#3 Tint", HideAlphaChannel))
+	FLinearColor ShadowBlur3Tint;
+	/** Blur4 tint color */
+	UPROPERTY(interp, BlueprintReadWrite, Category = "Toon|ShadowTextureBlur", AdvancedDisplay, meta = (editcondition = "bOverride_ShadowBlur4Tint", DisplayName = "#4 Tint", HideAlphaChannel))
+	FLinearColor ShadowBlur4Tint;
+	/** Blur5 tint color */
+	UPROPERTY(interp, BlueprintReadWrite, Category = "Toon|ShadowTextureBlur", AdvancedDisplay, meta = (editcondition = "bOverride_ShadowBlur5Tint", DisplayName = "#5 Tint", HideAlphaChannel))
+	FLinearColor ShadowBlur5Tint;
+	/** Blur6 tint color */
+	UPROPERTY(interp, BlueprintReadWrite, Category = "Toon|ShadowTextureBlur", AdvancedDisplay, meta = (editcondition = "bOverride_ShadowBlur6Tint", DisplayName = "#6 Tint", HideAlphaChannel))
+	FLinearColor ShadowBlur6Tint;
+	// ZHH End
+
+	// -----------------------------------------------------------------------
 
 	// -----------------------------------------------------------------------
 

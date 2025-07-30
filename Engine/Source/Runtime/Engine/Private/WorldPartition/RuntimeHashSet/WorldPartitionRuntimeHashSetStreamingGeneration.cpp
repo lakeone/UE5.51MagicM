@@ -43,6 +43,12 @@ bool UWorldPartitionRuntimeHashSet::GenerateRuntimePartitionsStreamingDescs(cons
 			NameToRuntimePartitionMap.Emplace(ActorSetInstance.RuntimeGrid, RuntimePartition);
 		}
 
+		if (ActorSetInstance.RuntimeGrid.ToString().Contains("HLOD"))
+		{
+			const URuntimePartition* Temp = ResolveRuntimePartition(ActorSetInstance.RuntimeGrid);
+			RuntimePartition = const_cast<URuntimePartition*>(Temp);// @todo-ow: GenerateStreaming() requires a non-const URuntimePartition object
+		}
+
 		RuntimePartitionsToActorSetMap.FindOrAdd(RuntimePartition).Add(&ActorSetInstance);
 	});
 

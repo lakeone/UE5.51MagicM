@@ -36,6 +36,10 @@ Texture2D ColorTexture;
 #endif
 SamplerState ColorSampler;
 
+// ZHH Start
+Texture2D OutlineTexture;
+// ZHH End
+
 
 FScreenTransform ColorToBloom;
 float2 BloomUVViewportBilinearMin;
@@ -351,6 +355,14 @@ float4 TonemapCommonPS(
 		#else
 			SceneColor = SampleSceneColor(SceneUV, ArrayIndex);
 		#endif
+
+		// ZHH Start
+		float4 Outline = Texture2DSample(OutlineTexture, ColorSampler, SceneUV);
+
+		float OutlineAlpha = clamp(Outline.a * 3, 0, 1);
+		Outline.rgb = Outline.a > 0.01 ? Outline.rgb / Outline.a : Outline.rgb;
+		SceneColor.rgb = lerp(SceneColor.rgb, Outline.rgb, OutlineAlpha);
+		// ZHH End
 
 		#if METAL_MSAA_HDR_DECODE && !USE_GAMMA_ONLY
 			// look for PreTonemapMSAA 

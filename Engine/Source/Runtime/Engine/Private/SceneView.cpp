@@ -1553,6 +1553,23 @@ void FSceneView::OverridePostProcessSettings(const FPostProcessSettings& Src, fl
 	{
 		FFinalPostProcessSettings& Dest = FinalPostProcessSettings;
 
+		// ZHH Start
+		LERP_PP(ShadowBlurSizeScale);
+		LERP_PP(ShadowCrossBlur);
+		LERP_PP(ShadowBlur1Tint);
+		LERP_PP(ShadowBlur1Size);
+		LERP_PP(ShadowBlur2Tint);
+		LERP_PP(ShadowBlur2Size);
+		LERP_PP(ShadowBlur3Tint);
+		LERP_PP(ShadowBlur3Size);
+		LERP_PP(ShadowBlur4Tint);
+		LERP_PP(ShadowBlur4Size);
+		LERP_PP(ShadowBlur5Tint);
+		LERP_PP(ShadowBlur5Size);
+		LERP_PP(ShadowBlur6Tint);
+		LERP_PP(ShadowBlur6Size);
+		// ZHH End
+
 		// The following code needs to be adjusted when settings in FPostProcessSettings change.
 		SET_PP(TemperatureType);
 		LERP_PP(WhiteTemp);
